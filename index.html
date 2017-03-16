@@ -1,0 +1,194 @@
+<html>
+<head>
+  <title>Pidalia</title>
+
+  <script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>
+  <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v1.14.0/dist/aframe-extras.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+  <script src="app.js"></script>
+
+</head>
+
+<body>
+<a-scene>
+  <a-assets>
+    <a-mixin id="spin" attribute="rotation" to="0 360 0" easing="linear" dur="96000"></a-mixin>
+
+    <audio id="blip1" src="Bing.mp3"></audio>
+    <a-mixin id="checkpoint"></a-mixin>
+    <a-mixin id="checkpoint-hovered" color="#6CEEB5"></a-mixin>
+    <a-mixin id="text" class="text"
+             text="align: center; width: 6; color: blue;
+               value: Welcome to our virtual gallery. Check out our t-shirt and our case studies by clicking on them. To move around, stare at the green markers on the ground and you'll teleport there."></a-mixin>
+
+    <img id="floor" src="floor3.jpg">
+
+    <img id="shoppingCart" src="shopping_cart2.png">
+
+    <img id="wall" src="greytexture.jpg">
+
+    <img id="ceiling" src="ceiling1.jpg">
+
+    <a-mixin id="black-square" geometry="primitive: box; width: 1; height: 2; depth: 1"
+             material="shader: flat; color: black; metalness: 1.0"></a-mixin>
+
+    <a-mixin id="white-marker" geometry="primitive: plane; width: 1; height: .3;" material="color: white; side: double"
+             rotation="0 0 0"></a-mixin>
+    <a-mixin id="white-marker1" geometry="primitive: plane; width: 1; height: .3;"
+             material="color: white; side: double" rotation="0 180 0"></a-mixin>
+    <a-mixin id="white-marker2" geometry="primitive: plane; width: 1; height: .3;"
+             material="color: white; side: double" rotation="0 90 0"></a-mixin>
+    <a-mixin id="white-marker3" geometry="primitive: plane; width: 1; height: .3;"
+             material="color: white; side: double" rotation="0 -90 0"></a-mixin>
+
+    <a-mixin id="can" geometry="primitive: box; height:.5; width:.5; depth: .5"></a-mixin>
+    <a-mixin id="cone" geometry="primitive: cone; radiusBottom: .5; radiusTop: 0.01"
+             material="color: #ff4337"></a-mixin>
+
+  </a-assets>
+
+  <!--instructions, ceiling, floor, lights, camera-->
+  <a-text mixin="text" position="0 2.2 -2" wrap-count="60"></a-text>
+  <a-light type="ambient" color="#fff"></a-light>
+  <a-plane position="0 -0.5 0" rotation="-90 0 0" src="#floor" width="30" height="30"
+           material="repeat: 10 10"></a-plane>
+  <a-plane position="0 4.5 0" rotation="90 0 0" src="#ceiling" width="30" height="30"
+           material="repeat: 15 15"></a-plane>
+  <a-plane position="0 2 -14" rotation="0 0 0" src="#wall" height="5" width="10"
+           material="repeat: 5 1; side: double;"></a-plane>
+  <a-plane position="0 2 14" rotation="0 0 0" src="#wall" height="5" width="10"
+           material="repeat: 5 1; side: double;"></a-plane>
+  <!--<a-sound src="src: url(Rubix_Cube.mp3)" autoplay="true" position="0 2 0"></a-sound>-->
+
+  <!-- Player -->
+  <a-entity camera universal-controls="movementControls: checkpoint" checkpoint-controls="mode: animate"
+            position="0 1.764 0">
+    <a-entity cursor="fuse: true; fuseTimeout: 500" position="0 0 -1"
+              geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03;" material="color: #CCC; shader: flat;">
+    </a-entity>
+  </a-entity>
+
+  <!--pedestals-->
+  <a-entity mixin="black-square" position="0 0 -9">
+    <a-entity mixin="white-marker" position="0 .5 .6" cursor-listener onclick="location.href='http://www.google.com'"
+              text="value: Click here to check out; color: blue; width: 2; align: center;"></a-entity>
+  </a-entity>
+
+  <a-entity mixin="black-square" position="0 0 9">
+    <a-entity mixin="white-marker1" position="0 .5 -.6"
+              text="value: Case Study 1; color: blue; width: 2; align: center;"></a-entity>
+  </a-entity>
+
+  <a-entity mixin="black-square" position="-9 0 0">
+    <a-entity mixin="white-marker2" position=".6 .5 0"
+              text="value: Case Study 2; color: blue; width: 2; align: center;"></a-entity>
+  </a-entity>
+
+  <a-entity mixin="black-square" position="9 0 0">
+    <a-entity mixin="white-marker3" position="-.6 .5 0"
+              text="value: Case Study 3; color: blue; width: 2; align: center;"></a-entity>
+  </a-entity>
+
+  <!--cans-->
+  <a-entity id="box" class="product-one" mixin="can"
+            material="src: t-shirt.png; repeat: 1 1" cursor-listener position="0 1.2 -9"
+            sound__1="on: mouseenter; src: #blip1;"
+            sound__2="on: click; src: #blip1;">
+    <a-animation mixin="spin"></a-animation>
+    <a-animation attribute="position" begin="fade" from="0 1.2 -9" to="0 .5 -9" dur="5000"></a-animation>
+  </a-entity>
+
+  <a-entity id="box" class="product-two" mixin="cone"
+            cursor-listener position="0 1.2 9"
+            onclick="location.href='http://www.google.com'">
+  </a-entity>
+
+  <a-entity id="box" class="product-three" mixin="cone"
+            cursor-listener position="-9 1.2 0"
+            onclick="location.href='http://www.google.com'">
+  </a-entity>
+
+  <a-entity id="box" class="product-four" mixin="cone"
+            cursor-listener position="9 1.2 0"
+            onclick="location.href='http://www.google.com'">
+  </a-entity>
+
+  <!--case studies-->
+  <a-image position="0 2 -13.9" src="wall-graphic.png" width="10" height="6"
+           rotation="0 0 0"></a-image>
+  <!--<a-image position="3 2 -13.8" src="learn_more.png" width="2" height="2"-->
+  <!--rotation="0 0 0" onclick="location.href='http://www.google.com'"> </a-image>-->
+
+  <a-image position="0 2 13.9" src="wall-graphic.png" width="4" height="4"
+           rotation="0 180 0"></a-image>
+  <!--<a-image position="-3 2 13.8" src="learn_more.png" width="2" height="2"-->
+  <!--rotation="0 180 0" onclick="location.href='http://www.google.com'"> </a-image>-->
+
+  <a-image position="13.9 2 0" src="wall-graphic.png" width="4" height="4"
+           rotation="0 -90 0"></a-image>
+  <!--<a-image position="13.8 2 3" src="learn_more.png" width="2" height="2"-->
+  <!--rotation="0 -90 0" onclick="location.href='http://www.google.com'"> </a-image>-->
+
+  <a-image position="-13.9 2 0" src="wall-graphic.png" width="4" height="4"
+           rotation="0 90 0"></a-image>
+  <!--<a-image position="-13.8 2 -3" src="learn_more.png" width="2" height="2"-->
+  <!--rotation="0 90 0" onclick="location.href='http://www.google.com'"> </a-image>-->
+
+  <!--shopping carts-->
+  <!--<a-image cursor-listener src="#shoppingCart" position="0 .001 -7.5"-->
+  <!--rotation="-90 0 0" onclick="location.href='http://www.google.com'">-->
+  <!--</a-image>-->
+  <!--<a-image cursor-listener src="#shoppingCart" position="0 .001 7.5"-->
+  <!--rotation="-90 180 0" onclick="location.href='http://www.google.com'">-->
+  <!--</a-image>-->
+  <!--<a-image cursor-listener src="#shoppingCart" position="7.5 .001 0"-->
+  <!--rotation="-90 -90 0" onclick="location.href='http://www.google.com'">-->
+  <!--</a-image>-->
+  <!--<a-image cursor-listener src="#shoppingCart" position="-7.5 .001 0"-->
+  <!--rotation="-90 90 0" onclick="location.href='http://www.google.com'">-->
+  <!--</a-image>-->
+
+  <!-- walls-->
+  <a-plane position="15 2 0" rotation="0 90 0" src="#wall" height="5" width="10"
+           material="repeat: 5 1; side: double;"></a-plane>
+
+  <a-plane position="-15 2 0" rotation="0 -90 0" src="#wall" height="5" width="10"
+           material="repeat: 5 1; side: double;"></a-plane>
+
+  <a-plane position="-10 2 -4" rotation="0 0 0" src="#wall" height="5" width="10"
+           material="repeat: 5 1; side: double;"></a-plane>
+
+  <a-plane position="-10 2 4" rotation="0 0 0" src="#wall" height="5" width="10"
+           material="repeat: 5 1; side: double;"></a-plane>
+
+  <a-plane position="10 2 -4" rotation="0 0 0" src="#wall" height="5" width="10"
+           material="repeat: 5 1; side: double;"></a-plane>
+
+  <a-plane position="10 2 4" rotation="0 0 0" src="#wall" height="5" width="10"
+           material="repeat: 5 1; side: double;"></a-plane>
+
+  <a-plane position="5 2 9" rotation="0 90 0" src="#wall" height="5" width="10"
+           material="repeat: 5 1; side: double;"></a-plane>
+
+  <a-plane position="-5 2 9" rotation="0 90 0" src="#wall" height="5" width="10"
+           material="repeat: 5 1; side: double;"></a-plane>
+
+  <a-plane position="5 2 -9" rotation="0 90 0" src="#wall" height="5" width="10"
+           material="repeat: 5 1; side: double;"></a-plane>
+
+  <a-plane position="-5 2 -9" rotation="0 90 0" src="#wall" height="5" width="10"
+           material="repeat: 5 1; side: double;"></a-plane>
+
+  <!--Checkpoints-->
+  <a-cylinder checkpoint="" radius=".5" height="0.1" position="0 0 0" color="#39BB82"></a-cylinder>
+  <a-cylinder checkpoint="" radius=".5" height="0.1" position="0 0 -6" color="#39BB82"></a-cylinder>
+  <a-cylinder checkpoint="" radius=".5" height="0.1" position="0 0 6" color="#39BB82"></a-cylinder>
+  <a-cylinder checkpoint="" radius=".5" height="0.1" position="6 0 0" color="#39BB82"></a-cylinder>
+  <a-cylinder checkpoint="" radius=".5" height="0.1" position="-6 0 0" color="#39BB82"></a-cylinder>
+
+</a-scene>
+
+
+</body>
+
+</html>
